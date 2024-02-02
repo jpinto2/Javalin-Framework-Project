@@ -23,10 +23,13 @@ public class AccountDAO {
             if(rs.next()) {
                 int id = rs.getInt(1);
                 account.setAccount_id(id);
+                return account;
             }
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
-        return account;
+        return null;
     }
+
+
 }

@@ -29,7 +29,7 @@ public class MessageService {
     }
 
     public Message updateMessage(int message_id,  Message message){
-        return messageDAO.updateMessage(message_id, Message message);
+        return messageDAO.updateMessage(message_id, message);
     }
     
      public List<Message> getUserMessages(int posted_by){

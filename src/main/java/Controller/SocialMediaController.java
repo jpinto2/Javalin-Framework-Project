@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import java.util.*;
+
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -16,6 +16,15 @@ import java.util.*;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
+
+    AccountService accountService;
+    MessageService messageService;
+
+    public SocialMediaController() {
+        messageService = new MessageService();
+        accountService = new AccountService();
+    }
+
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -23,9 +32,18 @@ public class SocialMediaController {
      */
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.get("example-endpoint", this::exampleHandler);
-
-        return app;
+        // app.get("example-endpoint", this::exampleHandler);
+       app.post("/register", this::registerHandler);
+       app.post("/login", this::loginHandler);
+       
+       app.post("/messages", this::createMessageHandler);
+       app.get("/messages", this::getAllMessagesHandler);
+       app.get("/messages/{message_id}", this::getMessageHandler);
+       app.delete("/messages/{message_id}", this::deleteMessageHandler);
+       app.patch("/messages/{message_id}", this::updateMessageHandler);
+       app.get("accounts/{account_id}/messages", this::getUserMessagesHandler);
+       
+       return app;
     }
 
     /**

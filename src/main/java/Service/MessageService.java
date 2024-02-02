@@ -28,8 +28,8 @@ public class MessageService {
         return messageDAO.deleteMessage(message_id);
     }
 
-    public Message updateMessage(int message_id,  String message_text){
-        return messageDAO.updateMessage(message_id, message_text);
+    public Message updateMessage(int message_id,  Message message){
+        return messageDAO.updateMessage(message_id, Message message);
     }
     
      public List<Message> getUserMessages(int posted_by){

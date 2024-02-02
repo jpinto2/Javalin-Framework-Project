@@ -113,8 +113,9 @@ public class MessageDAO {
         return null;
     }
 
-    public Message updateMessage(int message_id, String message_text) {
+    public Message updateMessage(int message_id, Message message) {
         Connection connection = ConnectionUtil.getConnection();
+        String message_text = message.getMessage_text();
 
         try {
             String sql = "UPDATE message SET message_text = ? WHERE message_id = ?;";
@@ -122,8 +123,8 @@ public class MessageDAO {
 
             ps.setString(1, message_text);
             ps.setInt(2, message_id);
-            ps.executeUpdate();
-
+            if(ps.executeUpdate() == 1) return getMessage(message_id);
+/* 
             String sql2 = "SELECT * FROM message WHERE message_id = ?";
             PreparedStatement ps2 = connection.prepareStatement(sql2);
 
@@ -138,7 +139,7 @@ public class MessageDAO {
                 // tried to do a getBigInt call, but none existed. long is supposed to be second biggest int type so went with that
                 rs.getLong("time_posted_epoch"));
                 return message;
-            }
+            } */
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

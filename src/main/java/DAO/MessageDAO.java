@@ -123,7 +123,7 @@ public class MessageDAO {
 
             ps.setString(1, message_text);
             ps.setInt(2, message_id);
-            if(ps.executeUpdate() == 1) return getMessage(message_id);
+            if(message_text.length() > 0 && ps.executeUpdate() == 1) return getMessage(message_id);
 /* 
             String sql2 = "SELECT * FROM message WHERE message_id = ?";
             PreparedStatement ps2 = connection.prepareStatement(sql2);

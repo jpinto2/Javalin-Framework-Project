@@ -28,7 +28,7 @@ public class AccountDAO {
                 account.setAccount_id(id);
                 return account;
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return null;
@@ -51,7 +51,7 @@ public class AccountDAO {
                 rs.getString("password"));
                 return user;
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return null;

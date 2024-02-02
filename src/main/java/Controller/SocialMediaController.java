@@ -67,7 +67,43 @@ public class SocialMediaController {
         }
     }
 
+    private void loginHandler(Context context) throws JsonProcessingException {
 
+        ObjectMapper objMapper = new ObjectMapper();
+        Account account = objMapper.readValue(context.body(), Account.class);
 
+        Account login = accountService.login(account);
+       
+        if (login != null) {
+            context.json(objMapper.writeValueAsString(login));
+        }else{
+            context.status(401);
+        }
+    }
+
+    private void createMessageHandler(Context context) throws JsonProcessingException {
+
+        ObjectMapper objMapper = new ObjectMapper();
+        Message message = objMapper.readValue(context.body(), Message.class);
+
+        Message create = messageService.createMessage(message);
+       
+        if (create != null) {
+            context.json(objMapper.writeValueAsString(create));
+        }else{
+            context.status(400);
+        }
+    }
+
+    private void getAllMessagesHandler(Context context) {
+        context.json(messageService.getAllMessages());
+    }
+
+    private void getUserMessagesHandler(Context context) {
+        int posted_by = Integer.parseInt(context.pathParam("account_id"));
+        context.json(messageService.getUserMessages(posted_by));
+    }
+
+    
 
 }

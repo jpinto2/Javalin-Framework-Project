@@ -113,5 +113,63 @@ public class MessageDAO {
         return null;
     }
 
+    public Message updateMessage(int message_id, String message_text) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "UPDATE message SET message_text = ? WHERE message_id = ?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, message_text);
+            ps.setInt(2, message_id);
+            ps.executeUpdate();
+
+            String sql2 = "SELECT * FROM message WHERE message_id = ?";
+            PreparedStatement ps2 = connection.prepareStatement(sql2);
+
+            ps2.setInt(1, message_id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Message message = new Message(rs.getInt("message_id"),
+                rs.getInt("posted_by"),
+                rs.getString("message_text"),
+                // tried to do a getBigInt call, but none existed. long is supposed to be second biggest int type so went with that
+                rs.getLong("time_posted_epoch"));
+                return message;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Message> getUserMessages(int posted_by) {
+        Connection connection = ConnectionUtil.getConnection();
+        List<Message> messages = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM message WHERE posted_by = ?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setInt(1, posted_by);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Message message = new Message(rs.getInt("message_id"),
+                rs.getInt("posted_by"),
+                rs.getString("message_text"),
+                // tried to do a getBigInt call, but none existed. long is supposed to be second biggest int type so went with that
+                rs.getLong("time_posted_epoch"));
+                messages.add(message);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return messages;
+    }
+
 
 }

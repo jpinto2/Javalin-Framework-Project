@@ -8,6 +8,8 @@ import java.sql.*;
 public class AccountDAO {
 
     public Account createAccount(Account account) {
+        
+        
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "INSERT INTO account(username, password) VALUES(?, ?);";
@@ -16,7 +18,9 @@ public class AccountDAO {
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPassword());
 
-            ps.executeUpdate();
+            // initially did it as return null statement up top if conditions weren't met, but then i realized the exception wouldn't execute
+            if (account.getUsername().length() > 0 && account.getPassword().length() > 3) ps.executeUpdate();
+
             ResultSet rs = ps.getGeneratedKeys();
 
             if (rs.next()) {
